@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PaginationDemo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/vue.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<table class="table table-hover table-striped" id="dataTable">
+    <thead>
+    <th>ID</th>
+    <th>姓名</th>
+    </thead>
+    <tbody>
+    <tr v-for="item in currentMembers">
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+    </tr>
+    </tbody>
+</table>
+<nav>
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <li v-for="p in pages">
+            <a href="javascript:gotoPage({{p}});">{{p}}</a>
+        </li>
+        <!--
+                <li><a href="javascript:gotoPage(1);">1</a></li>
+                <li><a href="javascript:gotoPage(2);">2</a></li>
+                <li><a href="javascript:gotoPage(3);">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>-->
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<script>
+    var allMembers = [
+        {id: 101, name: "jacky"},
+        {id: 102, name: "andy"},
+        {id: 3, name: "nacy"},
+        {id: 4, name: "freak"},
+        {id: 5, name: "michale"},
+        {id: 6, name: "andy"},
+        {id: 7, name: "nacy"},
+        {id: 8, name: "freak"},
+        {id: 9, name: "michale"},
+        {id: 10, name: "hello"},
+        {id: 11, name: "papi"},
+        {id: 12, name: "cow"},
+        {id: 13, name: "monkey"}
+    ];
+    var paging;
+    paging = new Vue({
+        el: 'body',
+        data: {
+            members: allMembers,
+            pageIndex: 1,
+            pageSize: 2
+        },
+        computed: {
+            currentMembers: function () {
+                var firstIndex = (this.pageIndex - 1) * this.pageSize;
+                var lastIndex = firstIndex + this.pageSize;
+                return this.members.slice(firstIndex, lastIndex);
+            },
+            pages: function () {
+                var pageCount = Math.ceil(this.members.length / this.pageSize);
+                var pages = [];
+                for (var i = 0; i < pageCount; i++) {
+                    pages.push(i + 1);
+                }
+                return pages;
+            }
+        }
+    });
+    function gotoPage(pageIndex) {
+        paging.pageIndex = pageIndex;
+    }
+    /*        if (pageIndex * paging.pageSize > paging.members.length) {
+     paging.pageIndex = paging.members.length / paging.pageSize;
+     }
+     */
+</script>
+</body>
+</html>
